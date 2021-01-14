@@ -1851,4 +1851,53 @@ impl<Parser> Solver<Parser> {
         }
         Ok(())
     }
+
+    // |===| Optimization.
+
+    /// Maximizes an expression.
+    #[inline]
+    pub fn maximize<Expr>(&mut self, expr: &Expr) -> SmtRes<()>
+    where
+        Expr: ?Sized + Expr2Smt<()>,
+    {
+        self.maximize_with(expr, ())
+    }
+    /// Maximizes an expression with some print information.
+    pub fn maximize_with<Info, Expr>(&mut self, expr: &Expr, info: Info) -> SmtRes<()>
+    where
+        Info: Copy,
+        Expr: ?Sized + Expr2Smt<Info>,
+    {
+        tee_write! {
+          self, |w| {
+            write_str(w, "(maximize\n  ")?;
+            expr.expr_to_smt2(w, info)?;
+            write_str(w, "\n)\n") ?
+          }
+        }
+        Ok(())
+    }
+    /// Minimizes an expression.
+    #[inline]
+    pub fn minimize<Expr>(&mut self, expr: &Expr) -> SmtRes<()>
+    where
+        Expr: ?Sized + Expr2Smt<()>,
+    {
+        self.minimize_with(expr, ())
+    }
+    /// Minimizes an expression with some print information.
+    pub fn minimize_with<Info, Expr>(&mut self, expr: &Expr, info: Info) -> SmtRes<()>
+    where
+        Info: Copy,
+        Expr: ?Sized + Expr2Smt<Info>,
+    {
+        tee_write! {
+          self, |w| {
+            write_str(w, "(minimize\n  ")?;
+            expr.expr_to_smt2(w, info)?;
+            write_str(w, "\n)\n") ?
+          }
+        }
+        Ok(())
+    }
 }
