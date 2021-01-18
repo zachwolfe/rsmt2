@@ -1771,6 +1771,11 @@ impl<Parser> Solver<Parser> {
         let future = self.print_check_sat_assuming_with(idents, info)?;
         self.parse_check_sat_or_unk(future)
     }
+
+    pub fn get_proof(&mut self) -> SmtRes<String> {
+        self.print_get_proof()?;
+        Ok(self.smt_parser.get_proof())
+    }
 }
 
 /// # Other commands (either untested or not useful right now).

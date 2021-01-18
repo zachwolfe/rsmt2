@@ -450,6 +450,13 @@ impl<R: BufRead> SmtParser<R> {
         }
     }
 
+    /// Just returns the rest of the buffer as a string because I can't be bothered to parse it
+    pub fn get_proof(&mut self) -> String {
+        let result = self.buff[self.cursor..].to_string();
+        self.cursor = self.buff.len() - 1;
+        result
+    }
+
     /// Tries to parse a tag, `true` if successful. Parse whitespaces and comments if any before the
     /// token.
     ///
