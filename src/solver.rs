@@ -1774,7 +1774,7 @@ impl<Parser> Solver<Parser> {
 
     pub fn get_proof(&mut self) -> SmtRes<String> {
         self.print_get_proof()?;
-        Ok(self.smt_parser.get_proof())
+        self.smt_parser.get_proof()
     }
 }
 
